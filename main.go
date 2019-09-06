@@ -33,60 +33,66 @@ func (n *Node) Next() *Node {
 }
 
 func main() {
+	k := 5
 	l := &List{}
 
-	for i := 0; i < 15; i++ {
+	for i := 0; i < 5; i++ { // Here we are just building a linked list of 15 elements
 		l.Push(i)
 	}
 
-	n := l.First()
-	println(n.value)
+	fmt.Printf("Before removing %v from the tail :\n", k)
+	l.Print()
+	l.removekthFromEnd(k)
+	fmt.Println("---------------------")
+	fmt.Println("After removing : ")
+	l.Print()
 
-	n = n.Next()
-	println(n.value)
-
-	l.kthFromTail(3)
 }
 
 /*
-   To remove kth from the tail, we find k-1 from the tail and repoint it to k+1 from the tail
+	removekthFromEnd will remove the kth element from the end of a singly linked list
+	for example, if we pass 1 and the list has 10 elements, the tail element will be removed
 */
-func (l *List) removekthFromTail(k int) {
-	fmt.Println("Welcome to kthFromTail(), l=")
-	l.Print()
-	fmt.Println("\n")
-	var p *Node
-	p = l.head
-	cnt := 0
+func (l *List) removekthFromEnd(k int) {
+	p1 := l.head
 	var p2 *Node
+	cnt := 0
 
 	for {
-		if cnt >= k-1 {
-			if cnt == k-1 {
+		if cnt >= k {
+			if cnt == k {
 				p2 = l.head
 			} else {
 				p2 = p2.Next()
 			}
 		}
 
-		//fmt.Println(p)
-		if p == l.tail {
+		if p1 == l.tail {
 			break
 		}
-		p = p.Next()
+		p1 = p1.Next()
 		cnt++
 	}
 
-	fmt.Printf("%d from the tail = %v\n", k, p2)
+	if cnt == k-1 { // we are removing the head
+		l.head = l.head.next // reset the head
+		return
+	}
 
+	if k == 1 { // we are removing the tail
+		p2.next = nil
+		l.tail = p2
+	} else {
+		p2.next = p2.Next().Next()
+	}
 }
 
 func (l *List) kthFromTail(k int) {
 	fmt.Println("Welcome to kthFromTail(), l=")
 	l.Print()
 	fmt.Println("\n")
-	var p *Node
-	p = l.head
+
+	p1 := l.head
 	cnt := 0
 	var p2 *Node
 
@@ -99,11 +105,10 @@ func (l *List) kthFromTail(k int) {
 			}
 		}
 
-		//fmt.Println(p)
-		if p == l.tail {
+		if p1 == l.tail {
 			break
 		}
-		p = p.Next()
+		p1 = p1.Next()
 		cnt++
 	}
 
@@ -114,6 +119,7 @@ func (l *List) kthFromTail(k int) {
 func (l *List) Print() {
 	var p *Node
 	p = l.head
+	fmt.Printf("Head: %v  Tail: %v\n", l.head, l.tail)
 
 	for {
 		fmt.Println(p)
