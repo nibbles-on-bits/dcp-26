@@ -33,7 +33,7 @@ func (n *Node) Next() *Node {
 }
 
 func main() {
-	k := 5
+	k := 3
 	l := &List{}
 
 	for i := 0; i < 5; i++ { // Here we are just building a linked list of 15 elements
